@@ -1,11 +1,5 @@
-# policy
-用于验证、解析Policy结构和语法
-## 安装
-```bash
-composer require hanwenbo/policy
-```
-## 使用方法
-```php
+<?php
+require_once '../vendor/autoload.php';
 
 $policyData = [
 	"Statement" => [
@@ -29,4 +23,3 @@ $policy->addPolicy( new \hanwenbo\policy\RequestBean\Policy( $policyData ) );
 $policy->addPolicy( new \hanwenbo\policy\RequestBean\Policy( $policyData ) );
 $result = $policy->verify( 'goods/list' );
 var_dump( $result );
-```

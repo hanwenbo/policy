@@ -1,0 +1,19 @@
+{
+    "name": "hanwenbo/policy",
+    "authors": [
+        {
+            "name": "韩文博",
+            "email": "9476400@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "hanwenbo\\policy\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.2",
+        "easyswoole/spl": "^1.1",
+        "ext-json":">=1.0"
+    }
+}

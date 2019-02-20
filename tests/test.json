@@ -1,0 +1,25 @@
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "goods/*",
+        "goods/list"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "goods/*",
+        "goods/list"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "goods/*",
+        "goods/list"
+      ]
+    }
+  ]
+}
