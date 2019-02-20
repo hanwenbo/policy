@@ -32,6 +32,11 @@ class Policy
 	protected $denyActions = [];
 
 	/**
+	 * @var string
+	 */
+	protected $errMsg;
+
+	/**
 	 * 只支持2级
 	 * @param $actionName
 	 */
@@ -102,6 +107,60 @@ class Policy
 	public function setPolicyList( array $policyList ) : void
 	{
 		$this->policyList = $policyList;
+	}
+
+	/**
+	 * 验证数据结构
+	 * 用于添加或者修改的时候判断是否符合本库数据结构的要求
+	 * @param array $structure
+	 * @return bool
+	 */
+	 public function verifyStructure(array $structure) : bool {
+		if(isset($structure['Statement']) && is_array($structure['Statement'])){
+			$this->setErrMsg('Statement must be set or is array');
+			foreach($structure['Statement'] as $statement){
+				if(!isset($statement['Effect']) || in_array($statement['Effect'],['Allow','Deny'])){
+					$this->setErrMsg('Effect must be in Allow|Deny');
+					return false;
+				}
+				if(!isset($statement['Action']) || !is_array($statement['Action']) || empty($statement['Action'])){
+					$this->setErrMsg('Action must be set or array`s length > 0');
+					return false;
+				}else{
+					// 不允许重复
+					if (count($statement['Action']) != count(array_unique($statement['Action']))) {
+						$this->setErrMsg('Action must be unique');
+						return false;
+					}
+					// 语法要符合 * 或者 是 xx/xx
+					foreach($statement['Action'] as $action){
+						if($action !== '*' && count(explode('/',$action)) !== 2){
+							$this->setErrMsg('Action must be `*` or `controller/action` or `controller/*`');
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}else{
+			return false;
+		}
+	 }
+
+	/**
+	 * @return string
+	 */
+	public function getErrMsg() : string
+	{
+		return $this->errMsg;
+	}
+
+	/**
+	 * @param string $errMsg
+	 */
+	public function setErrMsg( string $errMsg ) : void
+	{
+		$this->errMsg = $errMsg;
 	}
 
 }
