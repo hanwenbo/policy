@@ -30,3 +30,44 @@ $policy->addPolicy( new \hanwenbo\policy\RequestBean\Policy( $policyData ) );
 $result = $policy->verify( 'goods/list' );
 var_dump( $result );
 ```
+## 思路说明
+
+假设是一个FaShop的商城项目
+
+权限应该分为3个表，一个组可以拥有多个策略，为了方便开发者可以将每个模块的策略预置到数据库里，比如订单模块，商品模块，在给权限组分权限的时候，多选这些模块（策略），当验证的时候，查询出来所有的策略，扔给该库进行验证。
+
+auth_group 角色组
+
+auth_group_policy 角色组拥有的 policy_id 集合
+
+auth_policy 权限策略表
+
+策略表里要有id、存放json的字段，json格式如下：
+```json
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "goods/*",
+        "goods/list"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "goods/*",
+        "goods/list"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "goods/*",
+        "goods/list"
+      ]
+    }
+  ]
+}
+
+```
