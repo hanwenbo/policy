@@ -119,7 +119,7 @@ class Policy
 		if(isset($structure['Statement']) && is_array($structure['Statement'])){
 			$this->setErrMsg('Statement must be set or is array');
 			foreach($structure['Statement'] as $statement){
-				if(!isset($statement['Effect']) || in_array($statement['Effect'],['Allow','Deny'])){
+				if(!isset($statement['Effect']) || !in_array($statement['Effect'],['Allow','Deny'])){
 					$this->setErrMsg('Effect must be in Allow|Deny');
 					return false;
 				}
