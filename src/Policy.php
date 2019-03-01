@@ -45,7 +45,7 @@ class Policy
 		$this->preParse();
 
 		list( $controller ) = explode( '/', $actionName );
-		$allow = in_array( $actionName, $this->allowActions ) || in_array( "{$controller}/*", $this->allowActions ) || in_array( '*', $this->denyActions );
+		$allow = in_array( $actionName, $this->allowActions ) || in_array( "{$controller}/*", $this->allowActions ) || in_array( '*', $this->allowActions );
 
 		$deny = in_array( $actionName, $this->denyActions ) || in_array( "{$controller}/*", $this->denyActions ) || in_array( '*', $this->denyActions );
 
