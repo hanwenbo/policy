@@ -1,5 +1,9 @@
+
+该库贡献到easyswoole仓库，大家一起维护，请移步到https://github.com/easy-swoole/policy
+
 # policy
 用于验证、解析Policy结构和语法
+
 ## 安装
 ```bash
 composer require hanwenbo/policy
