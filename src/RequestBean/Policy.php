@@ -27,7 +27,7 @@ class Policy extends SplBean
 	 */
 	public function getStatement() : array
 	{
-		return $this->Statement;
+		return (array)$this->Statement;
 	}
 
 	/**

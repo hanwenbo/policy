@@ -44,7 +44,7 @@ class Policy
 	{
 		$this->preParse();
 
-		list( $controller ) = explode( '/', $actionName );
+		[$controller] = explode( '/', $actionName );
 		$allow = in_array( $actionName, $this->allowActions ) || in_array( "{$controller}/*", $this->allowActions ) || in_array( '*', $this->allowActions );
 
 		$deny = in_array( $actionName, $this->denyActions ) || in_array( "{$controller}/*", $this->denyActions ) || in_array( '*', $this->denyActions );
@@ -81,8 +81,8 @@ class Policy
 		foreach( $this->policyList as $policy ){
 			if( $policy instanceof PolicyRequest ){
 				$statement_list = $policy->getStatement();
-				foreach($statement_list as $statement_item){
-					$statement       = new Statement( $statement_item );
+				foreach( $statement_list as $statement_item ){
+					$statement = new Statement( (array)$statement_item );
 					if( $statement->getEffect() === 'Allow' ){
 						$this->allowActions = array_unique( array_merge( $this->allowActions, $statement->getAction() ) );
 					} else if( $statement->getEffect() === 'Deny' ){
@@ -115,37 +115,38 @@ class Policy
 	 * @param array $structure
 	 * @return bool
 	 */
-	 public function verifyStructure(array $structure) : bool {
-		if(isset($structure['Statement']) && is_array($structure['Statement'])){
-			$this->setErrMsg('Statement must be set or is array');
-			foreach($structure['Statement'] as $statement){
-				if(!isset($statement['Effect']) || !in_array($statement['Effect'],['Allow','Deny'])){
-					$this->setErrMsg('Effect must be in Allow|Deny');
+	public function verifyStructure( array $structure ) : bool
+	{
+		if( isset( $structure['Statement'] ) && is_array( $structure['Statement'] ) ){
+			$this->setErrMsg( 'Statement must be set or is array' );
+			foreach( $structure['Statement'] as $statement ){
+				if( !isset( $statement['Effect'] ) || !in_array( $statement['Effect'], ['Allow', 'Deny'] ) ){
+					$this->setErrMsg( 'Effect must be in Allow|Deny' );
 					return false;
 				}
-				if(!isset($statement['Action']) || !is_array($statement['Action']) || empty($statement['Action'])){
-					$this->setErrMsg('Action must be set or array`s length > 0');
+				if( !isset( $statement['Action'] ) || !is_array( $statement['Action'] ) || empty( $statement['Action'] ) ){
+					$this->setErrMsg( 'Action must be set or array`s length > 0' );
 					return false;
-				}else{
+				} else{
 					// 不允许重复
-					if (count($statement['Action']) != count(array_unique($statement['Action']))) {
-						$this->setErrMsg('Action must be unique');
+					if( count( $statement['Action'] ) != count( array_unique( $statement['Action'] ) ) ){
+						$this->setErrMsg( 'Action must be unique' );
 						return false;
 					}
 					// 语法要符合 * 或者 是 xx/xx
-					foreach($statement['Action'] as $action){
-						if($action !== '*' && count(explode('/',$action)) !== 2){
-							$this->setErrMsg('Action must be `*` or `controller/action` or `controller/*`');
+					foreach( $statement['Action'] as $action ){
+						if( $action !== '*' && count( explode( '/', $action ) ) !== 2 ){
+							$this->setErrMsg( 'Action must be `*` or `controller/action` or `controller/*`' );
 							return false;
 						}
 					}
 				}
 			}
 			return true;
-		}else{
+		} else{
 			return false;
 		}
-	 }
+	}
 
 	/**
 	 * @return string
