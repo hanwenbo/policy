@@ -13,10 +13,14 @@
 
 namespace hanwenbo\policy\RequestBean;
 
-use EasySwoole\Spl\SplBean;
 
-class Policy extends SplBean
+class Policy
 {
+	public function __construct($Statement)
+	{
+		$this->Statement = $Statement;
+	}
+
 	/**
 	 * @var array
 	 */
@@ -27,7 +31,7 @@ class Policy extends SplBean
 	 */
 	public function getStatement() : array
 	{
-		return (array)$this->Statement;
+		return $this->Statement;
 	}
 
 	/**

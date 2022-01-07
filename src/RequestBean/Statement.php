@@ -12,49 +12,29 @@
  */
 namespace hanwenbo\policy\RequestBean;
 
-use EasySwoole\Spl\SplBean;
-class Statement extends SplBean
+class Statement
 {
-	/**
-	 * @var string
-	 */
-	protected $Effect;
-	/**
-	 * @var array
-	 */
-	protected $Action;
+	private $Statement ;
+	public function __construct($Statement)
+	{
+		$this->Statement = $Statement;
+	}
 
 	/**
 	 * @return string
 	 */
 	public function getEffect() : string
 	{
-		return $this->Effect;
+		return $this->Statement->Effect;
 	}
 
-	/**
-	 * @param string $Effect
-	 */
-	public function setEffect( string $Effect ) : void
-	{
-		$this->Effect = $Effect;
-	}
 
 	/**
 	 * @return array
 	 */
 	public function getAction() : array
 	{
-		return $this->Action;
+		return $this->Statement->Action;
 	}
-
-	/**
-	 * @param array $Action
-	 */
-	public function setAction( array $Action ) : void
-	{
-		$this->Action = $Action;
-	}
-
 
 }

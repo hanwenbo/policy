@@ -82,7 +82,7 @@ class Policy
 			if( $policy instanceof PolicyRequest ){
 				$statement_list = $policy->getStatement();
 				foreach( $statement_list as $statement_item ){
-					$statement = new Statement( (array)$statement_item );
+					$statement = new Statement( $statement_item );
 					if( $statement->getEffect() === 'Allow' ){
 						$this->allowActions = array_unique( array_merge( $this->allowActions, $statement->getAction() ) );
 					} else if( $statement->getEffect() === 'Deny' ){
@@ -110,6 +110,7 @@ class Policy
 	}
 
 	/**
+	 * TODO 需要重写
 	 * 验证数据结构
 	 * 用于添加或者修改的时候判断是否符合本库数据结构的要求
 	 * @param array $structure
