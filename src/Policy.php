@@ -44,7 +44,10 @@ class Policy
 	{
 		$this->preParse();
 
-		[$controller] = explode( '/', $actionName );
+		$arr = explode( '/', $actionName );
+		array_pop( $arr );
+		$controller = implode( '/', $arr );
+
 		$allow = in_array( $actionName, $this->allowActions ) || in_array( "{$controller}/*", $this->allowActions ) || in_array( '*', $this->allowActions );
 
 		$deny = in_array( $actionName, $this->denyActions ) || in_array( "{$controller}/*", $this->denyActions ) || in_array( '*', $this->denyActions );
@@ -70,7 +73,7 @@ class Policy
 
 	public function addPolicy( PolicyRequest $policy )
 	{
-		array_push( $this->policyList, $policy );
+		$this->policyList[] = $policy;
 	}
 
 	/**
@@ -128,25 +131,25 @@ class Policy
 				if( !isset( $statement['Action'] ) || !is_array( $statement['Action'] ) || empty( $statement['Action'] ) ){
 					$this->setErrMsg( 'Action must be set or array`s length > 0' );
 					return false;
-				} else{
-					// 不允许重复
-					if( count( $statement['Action'] ) != count( array_unique( $statement['Action'] ) ) ){
-						$this->setErrMsg( 'Action must be unique' );
+				}
+
+				// 不允许重复
+				if( count( $statement['Action'] ) != count( array_unique( $statement['Action'] ) ) ){
+					$this->setErrMsg( 'Action must be unique' );
+					return false;
+				}
+				// 语法要符合 * 或者 是 xx/xx
+				foreach( $statement['Action'] as $action ){
+					if( $action !== '*' && count( explode( '/', $action ) ) < 2 ){
+						$this->setErrMsg( 'Action must be `*` or `controller/action` or `controller/*`' );
 						return false;
-					}
-					// 语法要符合 * 或者 是 xx/xx
-					foreach( $statement['Action'] as $action ){
-						if( $action !== '*' && count( explode( '/', $action ) ) !== 2 ){
-							$this->setErrMsg( 'Action must be `*` or `controller/action` or `controller/*`' );
-							return false;
-						}
 					}
 				}
 			}
 			return true;
-		} else{
-			return false;
 		}
+
+		return false;
 	}
 
 	/**

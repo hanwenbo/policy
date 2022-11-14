@@ -1,5 +1,6 @@
 {
     "name": "hanwenbo/policy",
+    "version": "2.0.0",
     "authors": [
         {
             "name": "韩文博",
@@ -10,10 +11,5 @@
         "psr-4": {
             "hanwenbo\\policy\\": "src/"
         }
-    },
-    "require": {
-        "php": "^7.2",
-        "easyswoole/spl": "^1.1",
-        "ext-json":">=1.0"
     }
 }
